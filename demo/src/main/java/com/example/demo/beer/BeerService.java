@@ -1,7 +1,10 @@
 package com.example.demo.beer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -26,7 +29,17 @@ public class BeerService {
         beerRepository.saveAll(beerEntityList);
     }
 
-    public Iterable<BeerEntity> getAllBeers() {
-        return beerRepository.findAll();
+    public List<BeerEntity> getAllBeers(Double abvLessThanEqual, Double abvGreaterThanEqual) {
+        List<BeerEntity> beerList = new ArrayList<BeerEntity>();
+        if(Objects.nonNull(abvLessThanEqual) && Objects.nonNull(abvGreaterThanEqual)){
+            beerList = beerRepository.findByAbvLessThanEqualAndAbvGreaterThanEqual(abvLessThanEqual, abvGreaterThanEqual);
+        }else if(Objects.nonNull(abvLessThanEqual)){
+            beerList = beerRepository.findByAbvLessThanEqual(abvLessThanEqual);
+        }else if(Objects.nonNull(abvGreaterThanEqual)){
+            beerList = beerRepository.findByAbvGreaterThanEqual(abvGreaterThanEqual);
+        }else{
+            beerRepository.findAll().forEach(beerList::add);
+        }
+        return beerList;
     }
 }

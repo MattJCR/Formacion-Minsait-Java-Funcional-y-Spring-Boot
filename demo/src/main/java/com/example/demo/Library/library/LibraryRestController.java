@@ -1,6 +1,7 @@
 package com.example.demo.Library.library;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import com.example.demo.Library.book.BookDto;
 import com.example.demo.Library.book.BookEntity;
 import com.example.demo.Library.book.BookRepository;
+import com.example.demo.Library.user.UserEntity;
 import com.example.demo.Library.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,33 +62,29 @@ public class LibraryRestController {
 
     }
 
-    // @PutMapping("/book/{id}")
-    // public ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody
-    // BookEntity book,
-    // @RequestParam(name = "renttouser", required = false) Long idUser) {
-    // try {
-    // BookEntity bookToUpdate = bookRepository.findById(id).get();
-    // Boolean available = false;
-    // if (Objects.isNull(bookToUpdate.getUser())) {
-    // available = true;
-    // } else {
-    // available = false;
-    // }
-    // bookToUpdate.setAuthor(book.getAuthor());
-    // bookToUpdate.setDescription(book.getDescription());
-    // bookToUpdate.setIsbm(book.getIsbm());
-    // bookToUpdate.setTitle(book.getTitle());
-    // if (Objects.nonNull(idUser) && available) {
-    // bookToUpdate.setUser(userRepository.findById(idUser).get());
-    // available = false;
-    // }
-    // BookDto bookDto = new BookDto(bookRepository.save(bookToUpdate));
-    // bookDto.checkAvailable();
-    // return new ResponseEntity<BookDto>(bookDto, HttpStatus.ACCEPTED);
-    // } catch (Exception e) {
-    // return new ResponseEntity<BookDto>(HttpStatus.BAD_REQUEST);
-    // }
-    // }
+    @PutMapping("/library/{id}")
+    public ResponseEntity<LibraryEntity> updateBook(@PathVariable Long id, @RequestBody LibraryEntity library,
+            @RequestParam(name = "adduser", required = false) Long idUser,
+            @RequestParam(name = "addbook", required = false) Long idBook) {
+        try {
+            LibraryEntity libraryToUpdate = libraryRepository.findById(id).get();
+            libraryToUpdate.setNombre(library.getNombre());
+            libraryToUpdate.setUbicacion(library.getUbicacion());
+            if (Objects.nonNull(idUser)) {
+                List<UserEntity> libraryUsers = new ArrayList<UserEntity>();
+                libraryUsers.add(userRepository.findById(idUser).get());
+                libraryToUpdate.setLibraryUsers(libraryUsers);
+            }
+            if (Objects.nonNull(idBook)) {
+                List<BookEntity> libraryBooks = new ArrayList<BookEntity>();
+                libraryBooks.add(bookRepository.findById(idBook).get());
+                libraryToUpdate.setBooks(libraryBooks);
+            }
+            return new ResponseEntity<LibraryEntity>(libraryRepository.save(libraryToUpdate), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<LibraryEntity>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     // @PatchMapping("/book/{id}")
     // public ResponseEntity<BookDto> patchBook(@PathVariable Long id, @RequestBody

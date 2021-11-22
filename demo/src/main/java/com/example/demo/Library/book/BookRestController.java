@@ -62,19 +62,19 @@ public class BookRestController {
         try {
             BookEntity bookToUpdate = bookRepository.findById(id).get();
             Boolean available = false;
-            if (Objects.isNull(bookToUpdate.getUser())) {
-                available = true;
-            } else {
-                available = false;
-            }
+            // if (Objects.isNull(bookToUpdate.getUser())) {
+            // available = true;
+            // } else {
+            // available = false;
+            // }
             bookToUpdate.setAuthor(book.getAuthor());
             bookToUpdate.setDescription(book.getDescription());
             bookToUpdate.setIsbm(book.getIsbm());
             bookToUpdate.setTitle(book.getTitle());
-            if (Objects.nonNull(idUser) && available) {
-                bookToUpdate.setUser(userRepository.findById(idUser).get());
-                available = false;
-            }
+            // if (Objects.nonNull(idUser) && available) {
+            // bookToUpdate.setUser(userRepository.findById(idUser).get());
+            // available = false;
+            // }
             BookDto bookDto = new BookDto(bookRepository.save(bookToUpdate));
             bookDto.checkAvailable();
             return new ResponseEntity<BookDto>(bookDto, HttpStatus.ACCEPTED);
@@ -89,11 +89,11 @@ public class BookRestController {
         try {
             BookEntity bookToUpdate = bookRepository.findById(id).get();
             Boolean available = false;
-            if (Objects.isNull(bookToUpdate.getUser())) {
-                available = true;
-            } else {
-                available = false;
-            }
+            // if (Objects.isNull(bookToUpdate.getUser())) {
+            // available = true;
+            // } else {
+            // available = false;
+            // }
             if (Objects.nonNull(book.getAuthor())) {
                 bookToUpdate.setAuthor(book.getAuthor());
             }
@@ -106,10 +106,10 @@ public class BookRestController {
             if (Objects.nonNull(book.getTitle())) {
                 bookToUpdate.setTitle(book.getTitle());
             }
-            if (Objects.nonNull(idUser) && available) {
-                bookToUpdate.setUser(userRepository.findById(idUser).get());
-                available = false;
-            }
+            // if (Objects.nonNull(idUser) && available) {
+            // bookToUpdate.setUser(userRepository.findById(idUser).get());
+            // available = false;
+            // }
             BookDto bookDto = new BookDto(bookRepository.save(bookToUpdate));
             bookDto.checkAvailable();
             return new ResponseEntity<BookDto>(bookDto, HttpStatus.ACCEPTED);

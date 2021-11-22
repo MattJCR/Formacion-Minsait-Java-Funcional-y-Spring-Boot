@@ -6,16 +6,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class BeerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String tagline;
+    @JsonProperty("first_brewed")
     private String firstBrewed;
     @Column(columnDefinition = "LONGTEXT")
     private String description;
+    @JsonProperty("image_url")
     private String imageUrl;
     private Double abv;
 
@@ -59,5 +63,26 @@ public class BeerEntity {
 
     public Double getAbv() {
         return abv;
+    }
+    public void setAbv(Double abv) {
+        this.abv = abv;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setFirstBrewed(String firstBrewed) {
+        this.firstBrewed = firstBrewed;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
     }
 }

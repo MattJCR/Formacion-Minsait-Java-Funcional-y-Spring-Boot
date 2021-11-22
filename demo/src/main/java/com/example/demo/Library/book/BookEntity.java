@@ -1,5 +1,8 @@
 package com.example.demo.Library.book;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,12 +11,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.example.demo.Library.library.LibraryEntity;
-import com.example.demo.Library.user.UserEntity;
+import com.example.demo.Library.transaccion.TransactionEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "transaction" })
 public class BookEntity {
     @Id
     @Column(name = "book_entity_id")
@@ -24,22 +31,12 @@ public class BookEntity {
     private String author;
     @Column(columnDefinition = "LONGTEXT")
     private String description;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_entity_id")
-    private UserEntity user;
-    @JsonBackReference
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "library_entity_id")
     private LibraryEntity library;
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    private List<TransactionEntity> transaction;
 
     public LibraryEntity getLibrary() {
         return library;
@@ -100,12 +97,13 @@ public class BookEntity {
         this.description = description;
     }
 
-    public BookEntity(String isbm, String title, String author, String description, UserEntity user) {
+    public BookEntity(String isbm, String title, String author, String description,
+            List<TransactionEntity> transaccion) {
         this.title = title;
         this.author = author;
         this.isbm = isbm;
         this.description = description;
-        this.user = user;
+        this.transaction = transaccion;
     }
 
     @Override

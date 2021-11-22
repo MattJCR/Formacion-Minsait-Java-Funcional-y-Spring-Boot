@@ -16,10 +16,13 @@ import javax.persistence.OneToMany;
 
 import com.example.demo.Library.book.BookEntity;
 import com.example.demo.Library.library.LibraryEntity;
+import com.example.demo.Library.transaccion.TransactionEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "transactions" })
 public class UserEntity {
     @Id
     @Column(name = "user_entity_id")
@@ -28,10 +31,10 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String email;
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-    private List<BookEntity> books;
-    @JsonBackReference
+    private List<TransactionEntity> transactions;
+
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_library", joinColumns = @JoinColumn(name = "user_entity_id"), inverseJoinColumns = @JoinColumn(name = "library_entity_id"))
     private List<LibraryEntity> libraries;
@@ -46,20 +49,20 @@ public class UserEntity {
         this.email = email;
     }
 
+    public List<TransactionEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionEntity> transactions) {
+        this.transactions = transactions;
+    }
+
     public List<LibraryEntity> getLibraries() {
         return libraries;
     }
 
     public void setLibraries(List<LibraryEntity> libraries) {
         this.libraries = libraries;
-    }
-
-    public List<BookEntity> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookEntity> books) {
-        this.books = books;
     }
 
     public String getEmail() {

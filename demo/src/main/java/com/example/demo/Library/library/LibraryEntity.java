@@ -23,10 +23,10 @@ public class LibraryEntity {
     private Long id;
     private String nombre;
     private String ubicacion;
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
     private List<BookEntity> books;
-    @JsonManagedReference
+
     @ManyToMany(mappedBy = "libraries")
     private List<UserEntity> libraryUsers;
 
@@ -71,6 +71,18 @@ public class LibraryEntity {
 
     public String getUbicacion() {
         return ubicacion;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     @Override

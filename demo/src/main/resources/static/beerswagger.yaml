@@ -1,0 +1,547 @@
+openapi: 3.0.1
+info:
+  title: Library
+  description: 'This is a sample server Library server.  You can find out more about
+    Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For
+    this sample, you can use the api key `special-key` to test the authorization filters.'
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.5
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost:8080/api/v1
+- url: https://localhost:8080/api/v1
+tags:
+- name: book
+  description: Everything about your Books
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: user
+  description: Everything about your Users
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: transaction
+  description: Everything about your Users
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+paths:
+  /book:
+    get:
+      tags:
+      - book
+      summary: Find all books
+      description: Returns book list
+      operationId: getAllBooks
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookArray'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BookArray'
+    post:
+      tags:
+      - book
+      summary: Save a new book to the list
+      description: this is a description
+      operationId: createBook
+      requestBody:
+        description: book object that needs to be added to the list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBook'
+        required: true
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        400:
+          description: bad request
+      x-codegen-request-body-name: book
+  /user:
+    get:
+      tags:
+      - user
+      summary: Find all users
+      description: Returns user list
+      operationId: getAllUsers
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+    post:
+      tags:
+      - user
+      summary: Save a new user to the list
+      description: this is a description
+      operationId: createUser
+      requestBody:
+        description: user object that needs to be added to the list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+        required: true
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: bad request
+      x-codegen-request-body-name: user
+  /transaction:
+    get:
+      tags:
+      - transaction
+      summary: Find all transactions
+      description: Returns transaction list
+      operationId: getAllTransaction
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionArray'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TransactionArray'
+    post:
+      tags:
+      - transaction
+      summary: Save a new transaction to the list
+      description: this is a description
+      operationId: createTransaction
+      requestBody:
+        description: transaction object that needs to be added to the list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTransaction'
+        required: true
+      parameters:
+      - name: book
+        in: query
+        description: ID of Book
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: user
+        in: query
+        description: ID of User
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        400:
+          description: bad request
+      x-codegen-request-body-name: transaction
+  /book/{id}:
+    get:
+      tags:
+      - book
+      summary: Find a books by Id
+      description: Returns book list
+      operationId: getBook
+      parameters:
+      - name: id
+        in: path
+        description: ID of book
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        404:
+          description: not found
+    put:
+      tags:
+      - book
+      summary: Save or update a book by Id
+      description: Update description
+      operationId: updateBook
+      parameters:
+      - name: id
+        in: path
+        description: ID of book
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: renttouser
+        in: query
+        description: ID of User
+        required: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated book object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBook'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        400:
+          description: bad request
+      x-codegen-request-body-name: body
+    patch:
+      tags:
+      - book
+      summary: Save or update a book by Id
+      description: Update description
+      operationId: updateBook
+      parameters:
+      - name: id
+        in: path
+        description: ID of book
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: renttouser
+        in: query
+        description: ID of User
+        required: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated book object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBook'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        400:
+          description: bad request
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - book
+      summary: Delete a book
+      description: Delete description
+      operationId: deleteBook
+      parameters:
+      - name: id
+        in: path
+        description: ID of book
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        202:
+          description: removed element
+          content: {}
+        404:
+          description: not found
+  /user/{id}:
+    get:
+      tags:
+      - user
+      summary: Find a users by Id
+      description: Returns user list
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of user
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: not found
+    put:
+      tags:
+      - user
+      summary: Save or update a user by Id
+      description: Update description
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of user
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: bad request
+      x-codegen-request-body-name: body
+    patch:
+      tags:
+      - user
+      summary: Save or update a user by Id
+      description: Update description
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of user
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: bad request
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - user
+      summary: Delete a user
+      description: Delete description
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of user
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        202:
+          description: removed element
+          content: {}
+        404:
+          description: not found
+  /transaction/{id}:
+    get:
+      tags:
+      - transaction
+      summary: Find a transactions by Id
+      description: Returns transaction list
+      operationId: getTransaction
+      parameters:
+      - name: id
+        in: path
+        description: ID of transaction
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        404:
+          description: not found
+components:
+  schemas:
+    NewBook:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Eloquent JavaScript, Second Edition
+        author:
+          type: string
+          example: Marijn Haverbeke
+        isbm:
+          type: string
+          example: SN000001
+        description:
+          type: string
+          example: All about JavaScript
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: Eloquent JavaScript, Second Edition
+        author:
+          type: string
+          example: Marijn Haverbeke
+        isbm:
+          type: string
+          example: SN000001
+        description:
+          type: string
+          example: All about JavaScript
+    BookResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: Eloquent JavaScript, Second Edition
+        author:
+          type: string
+          example: Marijn Haverbeke
+        isbm:
+          type: string
+          example: SN000001
+        description:
+          type: string
+          example: All about JavaScript
+        available:
+          type: boolean
+          example: false
+    BookArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/BookResponse'
+    NewUser:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Marijn
+        lastname:
+          type: string
+          example: Haverbeke
+        email:
+          type: string
+          example: email@email.com
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstname:
+          type: string
+          example: Marijn
+        lastname:
+          type: string
+          example: Haverbeke
+        email:
+          type: string
+          example: email@email.com
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    NewTransaction:
+      type: object
+      properties:
+        datetime:
+          type: string
+          example: null
+        status:
+          type: string
+          example: Nueva transaccion
+        user:
+          type: string
+          example: user
+        book:
+          type: string
+          example: book
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        datetime:
+          type: string
+          example: "2021-11-16T09:17:00.4479775"
+        status:
+          type: string
+          example: Pediente
+        user:
+          $ref: '#/components/schemas/User'
+        book:
+          $ref: '#/components/schemas/Book'
+    TransactionArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Transaction'

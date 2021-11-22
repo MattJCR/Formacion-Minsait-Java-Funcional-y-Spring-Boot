@@ -25,8 +25,8 @@ public class BookDto {
         this.author = book.getAuthor();
         this.isbm = book.getIsbm();
         this.description = book.getDescription();
-        this.user = book.getUser();
-        this.library = book.getLibrary();
+        // this.user = book.getUser();
+        // this.library = book.getLibrary();
         this.checkAvailable();
     }
 
